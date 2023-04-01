@@ -17,6 +17,6 @@ deploy:
 before_build:
 - dotnet new classlib -o . -n TestLib
 build_script:
-- dotnet pack -c Release -o dist
+- cmd: dotnet pack -c Release -o dist -p:VersionSuffix=%APPVEYOR_BUILD_VERSION%
 artifacts:
 - path: dist\*.nupkg
