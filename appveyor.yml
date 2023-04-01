@@ -1,0 +1,22 @@
+version: '{build}'
+image:
+- Visual Studio 2022
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/test-sandbox/api/v2/package
+  api_key:
+    secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
+  symbol_server: https://www.myget.org/F/test-sandbox/symbols/api/v2/package
+  on:
+    branch:
+    - master
+    - /^[0-9]+\.(x|[0-9]+)$/
+before_build:
+- dotnet new classlib -o . -n TestLib
+build_script:
+- dotnet pack -c Release -o dist
+artifacts:
+- path: dist\*.nupkg
